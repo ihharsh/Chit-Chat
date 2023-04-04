@@ -77,6 +77,10 @@ class HomeActivity : AppCompatActivity() {
             finish()
         }
 
+        binding_home.ivSetting.setOnClickListener {
+            startActivity(Intent(this,SettingsActivity::class.java))
+        }
+
 
 
 
