@@ -1,11 +1,17 @@
 package com.example.chitchat.Adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chitchat.ModelClass.Messages
+import com.example.chitchat.R
 import com.example.chitchat.databinding.ReceiverLayoutItemRvBinding
 import com.example.chitchat.databinding.SenderLayoutItemRvBinding
+import com.github.pgreze.reactions.ReactionPopup
+import com.github.pgreze.reactions.dsl.reactionConfig
+import com.github.pgreze.reactions.dsl.reactions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
@@ -63,17 +69,49 @@ class MessagesAdapter(messageList : ArrayList<Messages>, senderImageUri : String
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+
+        val config = reactionConfig(holder.itemView.context) {
+            reactions {
+                resId    { R.drawable.ic_fb_like }
+                resId    { R.drawable.ic_fb_love }
+                resId    { R.drawable.ic_fb_laugh }
+                reaction { R.drawable.ic_fb_wow scale ImageView.ScaleType.FIT_XY }
+                reaction { R.drawable.ic_fb_sad scale ImageView.ScaleType.FIT_XY }
+                reaction { R.drawable.ic_fb_angry scale ImageView.ScaleType.FIT_XY }
+            }
+        }
+
+        val popup = ReactionPopup(holder.itemView.context, config) { pos -> true.also {
+            // position = -1 if no selection
+        } }
+
+
         if(holder.javaClass == senderViewHolder::class.java) {
 
             var senderHolder = holder as senderViewHolder
             senderHolder.bind(messageList[position])
+
+            senderHolder.binding_sender.textMesaages.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+
+                popup.onTouch(view, motionEvent)
+                return@OnTouchListener true
+            })
 
         } else {
 
             var receiverHolder = holder as receiverViewHolder
             receiverHolder.bind(messageList[position])
 
+            receiverHolder.binding_receiver.textMesaages.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+
+                popup.onTouch(view, motionEvent)
+                return@OnTouchListener true
+            })
+
+
         }
+
+
 
 
 

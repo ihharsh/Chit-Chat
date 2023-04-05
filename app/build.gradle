@@ -65,5 +65,8 @@ dependencies {
     // picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
+    // text reaction libarary
+    implementation "com.github.pgreze:android-reactions:1.6"
+
 
 }
