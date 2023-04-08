@@ -1,22 +1,12 @@
 package com.example.chitchat.Activity
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chitchat.Adapter.MessagesAdapter
 import com.example.chitchat.ModelClass.Messages
-import com.example.chitchat.R
 import com.example.chitchat.databinding.ActivityChatBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -132,6 +122,7 @@ class ChatActivity : AppCompatActivity() {
 
                 for(snapshot in snapshot.children){
                     val message = snapshot.getValue(Messages::class.java)
+                    message?.messageID = snapshot.key.toString()
                     messageList.add(message!!)
                 }
 
@@ -150,23 +141,6 @@ class ChatActivity : AppCompatActivity() {
         dbReferenceChats.addValueEventListener(listener_senderRoom)
     }
 
-    fun addMessagesToDatabase(etMessage: String){
-        var date = Date()
-
-        var message = Messages(message = etMessage, senderUid = senderUid, timestamp = date.time)
-
-        database.reference.child("chats")
-            .child(senderRoom)
-            .child("messages")
-            .push()
-            .setValue(message).addOnSuccessListener {
-                database.reference.child("chats")
-                    .child(receiverRoom)
-                    .child("messages")
-                    .push()
-                    .setValue(message)
-            }
-    }
 
     fun updateSenderImage(){
         var dbref = database.reference.child("user").child(senderUid)
@@ -187,7 +161,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     fun setAdapter(){
-        adapter = MessagesAdapter(messageList, senderImageUri, receiverImageUri)
+        adapter = MessagesAdapter(messageList, senderImageUri, receiverImageUri,receiverRoom,senderRoom)
         var llm = LinearLayoutManager(this@ChatActivity)
         llm.stackFromEnd = true
         binding_chat.rvMessages.layoutManager = llm
@@ -200,73 +174,26 @@ class ChatActivity : AppCompatActivity() {
 
         var message = Messages(message = etMessage, senderUid = senderUid, timestamp = date.time)
 
+        val randomkey = database.reference.push().key.toString()
+
         database.reference.child("chats")
             .child(senderRoom)
             .child("messages")
-            .push()
+            .child(randomkey)
             .setValue(message)
             .addOnSuccessListener {
-
-
-                userNotification(etMessage,senderName)
 
 
                 database.reference.child("chats")
                     .child(receiverRoom)
                     .child("messages")
-                    .push()
+                    .child(randomkey)
                     .setValue(message)
-                Toast.makeText(this@ChatActivity,"test3",Toast.LENGTH_SHORT).show()
+
             }
     }
 
-    private fun userNotification(etMessage: String, senderName: String) {
 
-       notificationChannel()
-
-        val nBuilder= NotificationCompat.Builder(this,CHANNEL_ID)
-            .setContentTitle(senderName)
-            .setContentText(etMessage)
-            .setSmallIcon(R.drawable.profile)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            // passing the Bitmap object as an argument
-            .build()
-
-        val nManager = NotificationManagerCompat.from(this)
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        nManager.notify(1, nBuilder)
-
-
-
-    }
-
-    private fun notificationChannel() {
-        // check if the version is equal or greater
-        // than android oreo version
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // creating notification channel and setting
-            // the description of the channel
-            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT).apply {
-                description = CHANNEL_DESCRIPTION
-            }
-            // registering the channel to the System
-            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
 
 
 }
