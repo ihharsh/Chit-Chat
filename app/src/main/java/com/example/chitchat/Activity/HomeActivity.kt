@@ -3,6 +3,7 @@ package com.example.chitchat.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chitchat.ModelClass.User
 import com.example.chitchat.Adapter.UserAdapter
@@ -15,6 +16,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 
 class HomeActivity : AppCompatActivity() {
 
@@ -28,6 +31,25 @@ class HomeActivity : AppCompatActivity() {
         database = Firebase.database
         binding_home = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding_home.root)
+
+
+        Firebase.messaging.token.addOnSuccessListener {token->
+
+            val childUpdateToken = hashMapOf<String,Any>(
+                "token" to token
+            )
+
+            database.reference
+                .child("user")
+                .child(auth.uid!!)
+                .updateChildren(childUpdateToken)
+
+
+
+            Toast.makeText(this,token,Toast.LENGTH_SHORT).show()
+        }
+
+
 
         userList = ArrayList<User>()
 

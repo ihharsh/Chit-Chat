@@ -3,8 +3,11 @@ package com.example.chitchat.Activity
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.chitchat.Adapter.MessagesAdapter
 import com.example.chitchat.ModelClass.Messages
 import com.example.chitchat.databinding.ActivityChatBinding
@@ -16,7 +19,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.rpc.context.AttributeContext.Response
 import com.squareup.picasso.Picasso
+import org.json.JSONObject
 import java.util.Date
 
 class ChatActivity : AppCompatActivity() {
@@ -24,6 +29,7 @@ class ChatActivity : AppCompatActivity() {
     lateinit var receiverUid : String
     lateinit var receiverImageUri : String
     lateinit var receiverName : String
+    lateinit var receiverToken: String
 
     //  binding, auth & database
     lateinit var binding_chat: ActivityChatBinding
@@ -47,9 +53,6 @@ class ChatActivity : AppCompatActivity() {
     lateinit var senderUid : String
     lateinit var adapter: MessagesAdapter
 
-    val CHANNEL_ID = "GFG"
-    val CHANNEL_NAME = "GFG ContentWriting"
-    val CHANNEL_DESCRIPTION = "GFG NOTIFICATION"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,6 +108,10 @@ class ChatActivity : AppCompatActivity() {
         receiverUid = intent.getStringExtra("receiverUid")!!
         receiverName = intent.getStringExtra("receiverName")!!
         receiverImageUri = intent.getStringExtra("receiverImage")!!
+        receiverToken = intent.getStringExtra("token")!!
+
+        Toast.makeText(this,receiverToken,Toast.LENGTH_SHORT).show()
+
     }
 
     fun createChatRoom() {
@@ -188,9 +195,43 @@ class ChatActivity : AppCompatActivity() {
                     .child(receiverRoom)
                     .child("messages")
                     .child(randomkey)
-                    .setValue(message)
+                    .setValue(message).addOnSuccessListener {
+                        sendNotification(senderName,message.message)
+                    }
 
             }
+    }
+
+    fun sendNotification(name: String, message: String){
+        val queue = Volley.newRequestQueue(this)
+        val url = "https://fcm.googleapis.com/fcm/send"
+
+        val data = JSONObject()
+        data.put("title",name)
+        data.put("body",message)
+
+        val notificationData = JSONObject()
+        notificationData.put("notification",data)
+        notificationData.put("to",receiverToken)
+
+        val request = object : JsonObjectRequest(
+            Method.POST, url, notificationData,
+            com.android.volley.Response.Listener { response ->
+                // Handle the success response
+
+            },
+            com.android.volley.Response.ErrorListener { error ->
+                // Handle the error response
+
+            }) {
+            // add headers here
+        }
+
+        queue.add(request)
+
+
+
+
     }
 
 

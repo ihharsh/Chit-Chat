@@ -7,5 +7,6 @@ data class User(
     var name: String = "",
     var email: String = "",
     var imageUri: String = "",
-    var status: String = ""
+    var status: String = "",
+    var token: String=""
 )

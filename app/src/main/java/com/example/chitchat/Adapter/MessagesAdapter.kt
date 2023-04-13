@@ -102,14 +102,21 @@ class MessagesAdapter(
                 if(holder.javaClass == senderViewHolder::class.java) {
                 var senderHolder = holder as senderViewHolder
 
-                senderHolder.binding_sender.reaction.setImageResource(reactarray[pos])
+                    if(pos!=-1){
+                        senderHolder.binding_sender.reaction.setImageResource(reactarray[pos])
+                        senderHolder.binding_sender.reaction.visibility = View.VISIBLE
+                    }
 
-                    senderHolder.binding_sender.reaction.visibility = View.VISIBLE
+
             } else {
                 var receiverHolder = holder as receiverViewHolder
 
-                receiverHolder.binding_receiver.reaction.setImageResource(reactarray[pos])
-                    receiverHolder.binding_receiver.reaction.visibility = View.VISIBLE
+                    if(pos!=-1) {
+                        receiverHolder.binding_receiver.reaction.setImageResource(reactarray[pos])
+                        receiverHolder.binding_receiver.reaction.visibility = View.VISIBLE
+                    }
+
+
             }
 
                 message.reaction = pos

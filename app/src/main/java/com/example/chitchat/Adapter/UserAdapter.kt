@@ -36,6 +36,7 @@ class UserAdapter(userList: ArrayList<User>) : RecyclerView.Adapter<UserAdapter.
         var uid = userList[position].uid
         var image = userList[position].imageUri
         var status = userList[position].status
+        var token = userList[position].token
 
         holder.binding.userName.text = name
         holder.binding.userStatus.text = status
@@ -49,6 +50,7 @@ class UserAdapter(userList: ArrayList<User>) : RecyclerView.Adapter<UserAdapter.
             intent.putExtra("receiverName",name)
             intent.putExtra("receiverUid",uid)
             intent.putExtra("receiverImage",image)
+            intent.putExtra("token",token)
 
             context.startActivity(intent)
 

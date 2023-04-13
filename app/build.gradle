@@ -48,12 +48,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
+
     implementation platform('com.google.firebase:firebase-bom:31.2.3')
 
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -67,6 +69,9 @@ dependencies {
 
     // text reaction libarary
     implementation "com.github.pgreze:android-reactions:1.6"
+
+    // volley
+    implementation 'com.android.volley:volley:1.2.1'
 
 
 }
