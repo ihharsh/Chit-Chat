@@ -225,6 +225,14 @@ class ChatActivity : AppCompatActivity() {
 
             }) {
             // add headers here
+            override fun getHeaders(): MutableMap<String, String> {
+                // Set the request headers
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "key=AAAArOMRVv0:APA91bFy7IZZTGApgllj5JG38s2nQHq5HrzmJIMT7HiChhubs7eTsF0by5xo25OyrM3FN65OVFLiXBzv_n4x18RspejzFdSp8_3uV_1K31oad6Ab3uxIXH4snqX02zFm8k952m40mRWq"
+                headers["Content-Type"] = "application/json"
+                return headers
+            }
+
         }
 
         queue.add(request)
