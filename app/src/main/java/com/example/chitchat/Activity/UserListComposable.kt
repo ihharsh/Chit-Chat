@@ -75,6 +75,18 @@ class UserListComposable (context: Context){
 
     }
 
+    @Composable
+    fun UserListLazyColumn(users : ArrayList<User>) {
+        LazyColumn()
+        {
+            items(items = users){ user->
+                UserCard(user = user)
+            }
+
+        }
+
+    }
+
     private fun openChat(user: User) {
         var name = user.name
         var uid = user.uid
@@ -91,17 +103,8 @@ class UserListComposable (context: Context){
 
     }
 
-    @Composable
-    fun UserListLazyColumn(users : ArrayList<User>) {
-        LazyColumn()
-        {
-            items(items = users){ user->
-                UserCard(user = user)
-            }
 
-        }
 
-    }
 
 
 

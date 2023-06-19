@@ -15,6 +15,7 @@ import com.google.firebase.ktx.Firebase
 class LoginActivity : AppCompatActivity() {
 
     lateinit var binding_login: ActivityLoginBinding
+
     lateinit var auth : FirebaseAuth
     lateinit var progressDialog: ProgressDialog
 
