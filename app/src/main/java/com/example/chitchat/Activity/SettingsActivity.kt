@@ -84,6 +84,12 @@ class SettingsActivity : AppCompatActivity() {
             updateValueInFireBase(name,status,storageReference,dbReference)
         }
 
+        binding_setting.ivLogout.setOnClickListener {
+            auth.signOut()
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+
 
     }
 

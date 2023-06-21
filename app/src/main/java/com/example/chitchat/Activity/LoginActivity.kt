@@ -4,8 +4,11 @@ import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
+import android.view.animation.AnimationUtils
 import android.widget.Toast
+import com.example.chitchat.R
 import com.example.chitchat.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -30,6 +33,8 @@ class LoginActivity : AppCompatActivity() {
         progressDialog.setCancelable(false)
 
         setContentView(binding_login.root)
+
+        initializeAnimation()
 
 
         // if user dont have an account -> register
@@ -74,6 +79,27 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    private fun initializeAnimation() {
+       var fade_in = AnimationUtils.loadAnimation(this,R.anim.fade_in)
+        var bottom_down = AnimationUtils.loadAnimation(this,R.anim.bottom_down)
+
+        binding_login.toplinearLayout.animation = bottom_down
+
+        var handler = Handler()
+        var runnable = Runnable {binding_login.btnSignIn.animation = fade_in
+            binding_login.cvFacebookLogin.animation = fade_in
+            binding_login.cvGoogleLogin.animation = fade_in
+            binding_login.cvTwitterLogin.animation = fade_in
+            binding_login.llSignup.animation = fade_in
+            binding_login.tvChitchat.animation = fade_in
+            binding_login.cardView.animation = fade_in
+            binding_login.cvLogo.animation = fade_in  }
+
+        handler.postDelayed(runnable,1000)
+
+
+    }
+
 
     fun isEmailValid(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -89,6 +115,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, HomeActivity::class.java))
                 finish()
             } else {
+                progressDialog.dismiss()
                 Toast.makeText(this,"Error in Login", Toast.LENGTH_SHORT).show()
             }
 

@@ -54,21 +54,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding_home.root)
 
 
-        Firebase.messaging.token.addOnSuccessListener {token->
 
-            val childUpdateToken = hashMapOf<String,Any>(
-                "token" to token
-            )
-
-            database.reference
-                .child("user")
-                .child(auth.uid!!)
-                .updateChildren(childUpdateToken)
-
-
-
-            Toast.makeText(this,token,Toast.LENGTH_SHORT).show()
-        }
 
 
 
@@ -76,10 +62,29 @@ class HomeActivity : AppCompatActivity() {
 
 
         if(auth.currentUser==null){
-            startActivity(Intent(this, ResgistrationActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
         }
 
         var databaseReference = database.reference.child("user")
+
+        Firebase.messaging.token.addOnSuccessListener {token->
+
+            val childUpdateToken = hashMapOf<String,Any>(
+                "token" to token
+            )
+
+
+            auth.currentUser?.uid?.let { userId ->
+                database.reference
+                    .child("user")
+                    .child(userId)
+                    .updateChildren(childUpdateToken)
+            }
+
+
+
+
+        }
 
 
 
@@ -122,11 +127,11 @@ class HomeActivity : AppCompatActivity() {
 
 
 
-        binding_home.ivLogout.setOnClickListener {
-            auth.signOut()
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
+//        binding_home.ivLogout.setOnClickListener {
+//            auth.signOut()
+//            startActivity(Intent(this, LoginActivity::class.java))
+//            finish()
+//        }
 
         binding_home.ivSetting.setOnClickListener {
             startActivity(Intent(this,SettingsActivity::class.java))

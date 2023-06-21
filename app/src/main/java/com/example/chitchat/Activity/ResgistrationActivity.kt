@@ -5,15 +5,19 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.example.chitchat.ModelClass.User
+import com.example.chitchat.R
 import com.example.chitchat.databinding.ActivityResgistrationBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
@@ -47,6 +51,10 @@ class ResgistrationActivity : AppCompatActivity() {
 
 
         setContentView(binding_registration.root)
+
+        initializeAnimation()
+
+
 
         binding_registration.btnSignUp.setOnClickListener {
 
@@ -83,6 +91,24 @@ class ResgistrationActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun initializeAnimation() {
+        var fade_in = AnimationUtils.loadAnimation(this, R.anim.fade_in)
+        var bottom_down = AnimationUtils.loadAnimation(this, R.anim.bottom_down)
+
+        binding_registration.toplinearLayout.animation = bottom_down
+
+        var handler = Handler()
+        var runnable = Runnable {binding_registration.btnSignUp.animation = fade_in
+            binding_registration.profileImage.animation = fade_in
+            binding_registration.llSignin.animation = fade_in
+
+            binding_registration.tvChitchat.animation = fade_in
+            binding_registration.cardView.animation = fade_in
+            binding_registration.cvLogo.animation = fade_in  }
+
+        handler.postDelayed(runnable,1000)
     }
 
 
