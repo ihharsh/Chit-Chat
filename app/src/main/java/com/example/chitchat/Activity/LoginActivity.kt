@@ -32,6 +32,8 @@ class LoginActivity : AppCompatActivity() {
         progressDialog.setMessage("Please wait...")
         progressDialog.setCancelable(false)
 
+
+
         setContentView(binding_login.root)
 
         initializeAnimation()

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
+import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.example.chitchat.ModelClass.User
@@ -115,6 +116,11 @@ class ResgistrationActivity : AppCompatActivity() {
     private fun createUser(email: String, pass: String, name: String) {
         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
 
+            var tasksuccess = task.isSuccessful
+            Log.d("MyTag", "tasksuccess is $tasksuccess")
+
+
+
             // if user created succesfully then go to Home
             if (task.isSuccessful) {
 
@@ -160,6 +166,7 @@ class ResgistrationActivity : AppCompatActivity() {
                             startActivity(Intent(this, HomeActivity::class.java))
                             finish()
                         } else {
+                            progressDialog.dismiss()
                             Toast.makeText(this, "Enter in creating a new User", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -170,7 +177,16 @@ class ResgistrationActivity : AppCompatActivity() {
 
 
             }
+
+            else {
+                val authError = task.exception
+                Log.e("MyTagError", "Authentication failed: ${authError?.message}")
+                progressDialog.dismiss()
+                progressDialog.dismiss()
+            }
         }
+
+
 
 
     }

@@ -5,8 +5,12 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Im
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.example.chitchat.ModelClass.User
+import com.example.chitchat.R
 import com.example.chitchat.databinding.ActivitySettingsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -84,7 +88,16 @@ class SettingsActivity : AppCompatActivity() {
             updateValueInFireBase(name,status,storageReference,dbReference)
         }
 
-        binding_setting.ivLogout.setOnClickListener {
+        var logout: ImageView = findViewById<ImageView>(R.id.iv_logout_toolbar)
+
+        var back_btn: ImageView = findViewById(R.id.toolbar_back_button_settings)
+
+        back_btn.setOnClickListener {
+            onBackPressed()
+        }
+
+
+        logout.setOnClickListener {
             auth.signOut()
             startActivity(Intent(this, LoginActivity::class.java))
             finish()

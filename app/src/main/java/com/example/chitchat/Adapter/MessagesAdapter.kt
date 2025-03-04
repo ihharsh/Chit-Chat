@@ -14,10 +14,9 @@ import com.github.pgreze.reactions.ReactionsConfigBuilder
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.squareup.picasso.Picasso
 
 class MessagesAdapter(
-    messageList: ArrayList<Messages>,
+    messageList: List<Messages>,
     senderImageUri: String,
     receiverImageUri: String,
     receiverRoom: String,
@@ -28,7 +27,7 @@ class MessagesAdapter(
          fun bind(messages: Messages){
              binding_sender.textMesaages.text = messages.message
 
-             Picasso.with(binding_sender.senderImage.context).load(senderImageUri).into(binding_sender.senderImage)
+            // Picasso.with(binding_sender.senderImage.context).load(senderImageUri).into(binding_sender.senderImage)
 
          }
      }
@@ -37,7 +36,7 @@ class MessagesAdapter(
          fun bind(messages: Messages){
              binding_receiver.textMesaages.text = messages.message
 
-             Picasso.with(binding_receiver.receiverImage.context).load(receiverImageUri).into(binding_receiver.receiverImage)
+            // Picasso.with(binding_receiver.receiverImage.context).load(receiverImageUri).into(binding_receiver.receiverImage)
 
          }
      }
@@ -119,6 +118,7 @@ class MessagesAdapter(
 
             }
 
+
                 message.reaction = pos
                 database.reference.child("chats")
                     .child(senderRoom)
@@ -162,6 +162,7 @@ class MessagesAdapter(
             } else {
                 senderHolder.binding_sender.reaction.visibility = View.INVISIBLE
             }
+
 
             senderHolder.binding_sender.textMesaages.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
 

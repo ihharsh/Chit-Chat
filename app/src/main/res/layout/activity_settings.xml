@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,59 +7,95 @@
     tools:context=".Activity.SettingsActivity"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/save"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/round_black_shape"
-        android:src="@drawable/done"
-        android:layout_gravity="right"
-        android:padding="5dp"
-        android:layout_margin="10dp"
-        app:tint="@color/white" />
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar_custom_settings" />
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
         android:src="@drawable/profile"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"
-        android:layout_marginTop="20dp"/>
-
-    <EditText
-        android:id="@+id/setting_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_marginTop="5dp"
-        android:textStyle="bold"
-        android:text="@string/app_name"
-        android:background="@null"
-        android:layout_gravity="center"/>
-
-    <EditText
-        android:id="@+id/setting_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_marginTop="10dp"
-        android:text="hey there using chit chaat"
-        android:background="@null"
-        android:layout_gravity="center"/>
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/iv_logout"
-        android:layout_marginTop="50dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:src="@drawable/logout"/>
+        android:layout_width="58dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="160dp"
+        android:src="@drawable/baseline_photo_camera_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.355"
+        app:layout_constraintStart_toStartOf="@+id/profile_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_image"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:layout_gravity="center_horizontal"/>
+
+        <EditText
+            android:id="@+id/setting_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="User Name"
+            android:background="@null"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:layout_gravity="center_horizontal"/>
+
+        <EditText
+            android:id="@+id/setting_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="User Status"
+            android:background="@null"
+            android:layout_gravity="center_horizontal"
+            />
 
 
 
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/save"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_button_bg"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="300dp"
+            android:text="Save CHANGES"
+            android:textColor="@color/white"
+            android:textSize="20dp"/>
 
 
-</LinearLayout>
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
